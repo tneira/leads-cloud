@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaan Mentorship Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:      #1C3F5F;
+  --navy-2:    #16344E;
+  --blue:      #4795CD;
+  --blue-lt:   #7FB5DC;
+  --blue-pale: #EAF2F9;
+  --ink:       #1A202C;
+  --ink-soft:  #4A5568;
+  --muted:     #718096;
+  --muted-2:   #CBD5E0;
+  --rule:      #E2E8F0;
+  --surface:   #FFFFFF;
+  --bg:        #F7F8FA;
+  --alert:     #C7102E;
+  --gradient:  linear-gradient(to right, #3B8DB5, #7DC27A);
+  --sans:  'Archivo', system-ui, sans-serif;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --mono:  'JetBrains Mono', ui-monospace, monospace;
+  --sw: 228px;
+  --th: 48px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.5; }
+
+/* Top bar */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--th);
+  background: var(--navy-2); display: flex; align-items: center;
+  padding: 0 20px 0 calc(var(--sw) + 20px); z-index: 200; gap: 12px; overflow: hidden;
+}
+#topbar::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--gradient); }
+.tb-badge { font-size:12px; font-weight:800; background:var(--blue); color:#fff; padding:2px 8px; border-radius:3px; flex-shrink:0; }
+.tb-crumb { font-size:11px; color:rgba(255,255,255,.45); display:flex; align-items:center; gap:6px; flex:1; overflow:hidden; white-space:nowrap; min-width:0; }
+.tb-crumb .sep { color:rgba(255,255,255,.2); }
+.tb-crumb .sec { color:rgba(255,255,255,.55); flex-shrink:0; }
+.tb-crumb .ttl { color:rgba(255,255,255,.85); font-weight:600; overflow:hidden; text-overflow:ellipsis; }
+.tb-ctrl { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.tb-btn { font-size:11px; font-weight:600; padding:4px 12px; border-radius:3px; border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.07); color:rgba(255,255,255,.7); cursor:pointer; transition:background .15s; }
+.tb-btn:hover { background:rgba(255,255,255,.15); color:#fff; }
+.tb-btn:disabled { opacity:.3; cursor:default; }
+.tb-ct { font-size:11px; color:rgba(255,255,255,.35); min-width:44px; text-align:center; font-variant-numeric:tabular-nums; }
+#progress { position:fixed; top:var(--th); left:var(--sw); right:0; height:2px; z-index:199; }
+#pfill { height:100%; background:var(--gradient); transition:width .3s ease; }
+
+/* Sidebar */
+#sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sw); background:var(--surface); border-right:1px solid var(--rule); z-index:201; display:flex; flex-direction:column; overflow:hidden; }
+.sb-head { padding:14px 16px 12px; border-bottom:1px solid var(--rule); flex-shrink:0; }
+.sb-head::before { content:''; display:block; height:3px; background:var(--gradient); border-radius:2px; margin-bottom:10px; }
+.sb-title { font-size:11px; font-weight:700; color:var(--navy); line-height:1.4; }
+.sb-meta { font-size:10px; color:var(--muted); margin-top:2px; font-family:var(--serif); font-style:italic; }
+.sb-toc { flex:1; overflow-y:auto; padding:8px 0 16px; }
+.sb-toc::-webkit-scrollbar { width:3px; }
+.sb-toc::-webkit-scrollbar-thumb { background:var(--rule); border-radius:2px; }
+.sb-sec { font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding:10px 16px 5px; margin-top:4px; }
+.sb-item { display:flex; align-items:flex-start; gap:8px; padding:5px 16px; cursor:pointer; border-left:2px solid transparent; transition:background .1s, border-color .1s; }
+.sb-item:hover { background:var(--bg); }
+.sb-item.active { background:var(--blue-pale); border-left-color:var(--blue); }
+.sb-item.active .sb-n { color:var(--blue); }
+.sb-item.active .sb-l { color:var(--navy); font-weight:600; }
+.sb-n { font-size:10px; font-weight:700; color:var(--muted-2); min-width:16px; margin-top:1px; flex-shrink:0; font-variant-numeric:tabular-nums; }
+.sb-l { font-size:11.5px; color:var(--ink-soft); line-height:1.35; }
+
+/* Main */
+#main { margin-left:var(--sw); margin-top:var(--th); min-height:calc(100vh - var(--th)); }
+.slide { display:none; max-width:860px; margin:0 auto; padding:44px 52px 72px; min-height:calc(100vh - var(--th)); animation:fadeUp .2s ease; }
+.slide.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+
+/* Design system */
+.tab-accent { display:block; width:36px; height:3px; background:var(--gradient); border-radius:2px; margin-bottom:12px; }
+.kicker { font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--blue); margin-bottom:10px; }
+h1.slide-title { font-family:var(--sans); font-size:34px; font-weight:800; color:var(--ink); line-height:1.08; letter-spacing:-.4px; margin-bottom:12px; }
+.standfirst { font-family:var(--serif); font-size:15px; color:var(--ink-soft); line-height:1.65; max-width:700px; margin-bottom:24px; }
+.standfirst em { font-style:italic; }
+.state { font-family:var(--serif); font-size:14px; color:var(--ink-soft); line-height:1.7; padding:16px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); margin-bottom:24px; }
+.state strong { color:var(--ink); font-weight:600; font-family:var(--sans); }
+.section-label { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--rule); }
+.section-title { font-family:var(--sans); font-size:18px; font-weight:800; color:var(--ink); margin-bottom:4px; }
+.takeaway { font-family:var(--serif); font-style:italic; font-size:13px; color:var(--ink-soft); line-height:1.6; margin-top:12px; padding-left:12px; border-left:2px solid var(--blue-lt); }
+.takeaway strong { font-style:normal; font-weight:600; color:var(--ink); }
+.note { padding:12px 0 12px 14px; border-left:2px solid var(--rule); font-family:var(--serif); font-size:13px; font-style:italic; color:var(--ink-soft); line-height:1.6; }
+.note strong { font-style:normal; font-weight:600; color:var(--ink); }
+.note.accent { border-left-color:var(--blue-lt); }
+.note.alert  { border-left-color:var(--alert); }
+.note.alert strong { color:var(--alert); }
+.verdict { padding:14px 18px; border-left:3px solid var(--blue-lt); font-family:var(--serif); font-size:13.5px; color:var(--ink-soft); line-height:1.65; }
+.verdict strong { color:var(--ink); font-weight:600; font-family:var(--sans); }
+.vh { font-family:var(--sans); font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.strip { display:grid; border:1px solid var(--rule); border-radius:3px; margin-bottom:24px; overflow:hidden; }
+.strip.c2 { grid-template-columns:repeat(2,1fr); }
+.strip.c3 { grid-template-columns:repeat(3,1fr); }
+.strip.c4 { grid-template-columns:repeat(4,1fr); }
+.stat { padding:14px 18px 12px; border-right:1px solid var(--rule); }
+.stat:last-child { border-right:none; }
+.s-lbl { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:7px; }
+.s-val { font-family:var(--sans); font-size:26px; font-weight:700; color:var(--ink); line-height:1; margin-bottom:4px; }
+.s-val.blue { color:var(--blue); }
+.s-sub { font-size:10.5px; color:var(--muted); font-style:italic; font-family:var(--serif); }
+table.econ { width:100%; border-collapse:collapse; font-size:11.5px; font-variant-numeric:tabular-nums; }
+table.econ th { text-align:right; padding:7px 10px; border-bottom:1.5px solid var(--ink); font-size:9px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:700; }
+table.econ th:first-child, table.econ td:first-child { text-align:left; }
+table.econ td { padding:6px 10px; border-bottom:1px solid var(--rule); text-align:right; }
+table.econ tr:hover td { background:var(--bg); }
+table.econ tr.tot td { border-top:1.5px solid var(--ink); font-weight:700; font-size:12px; }
+.tc-pos  { color:var(--blue);  font-weight:600; }
+.tc-neg  { color:var(--alert); font-weight:600; }
+.tc-mute { color:var(--muted); }
+.tc-emph { color:var(--navy);  font-weight:700; }
+.chip { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:2px; letter-spacing:.2px; font-family:var(--sans); }
+.chip-pos  { background:var(--blue-pale); color:var(--navy); border:1px solid var(--blue-lt); }
+.chip-flat { background:var(--bg); color:var(--muted); border:1px solid var(--rule); }
+.chip-ok   { background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; }
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+.g-work { display:grid; grid-template-columns:1fr 240px; gap:28px; align-items:start; }
+.mt-8  { margin-top:8px; }
+.mt-16 { margin-top:16px; }
+.mt-20 { margin-top:20px; }
+.mt-24 { margin-top:24px; }
+.mt-28 { margin-top:28px; }
+.arc { display:grid; grid-template-columns:repeat(4,1fr); margin-top:20px; border:1px solid var(--rule); border-radius:3px; overflow:hidden; }
+.arc-step { padding:16px 14px; border-right:1px solid var(--rule); }
+.arc-step:last-child { border-right:none; }
+.arc-n { font-size:22px; font-weight:800; color:var(--blue); }
+.arc-l { font-size:12px; color:var(--muted); margin-top:4px; font-family:var(--serif); font-style:italic; line-height:1.4; }
+.rail { background:var(--surface); border:1px solid var(--rule); border-radius:3px; padding:16px 18px 20px; }
+.rail-h { font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding-bottom:10px; border-bottom:1px solid var(--rule); margin-bottom:14px; }
+
+/* Funnel bar rows */
+.funnel-row { display:grid; grid-template-columns:130px 1fr 52px; align-items:center; margin-bottom:7px; font-size:11.5px; gap:8px; }
+.fl { font-weight:600; color:var(--ink-soft); }
+.ftrack { display:block; height:18px; background:var(--bg); border-radius:2px; overflow:hidden; border:1px solid var(--rule); }
+.ffill  { display:block; height:100%; border-radius:1px; }
+.fp { text-align:right; font-weight:700; color:var(--ink); font-size:12px; }
+
+/* Step funnel */
+.fstep { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--rule); align-items:flex-start; }
+.fstep:last-child { border-bottom:none; }
+.fstep-n { width:22px; height:22px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; margin-top:1px; }
+.fstep-n.blue { background:var(--blue); }
+.fstep-body { font-size:13px; color:var(--ink-soft); font-family:var(--serif); line-height:1.5; }
+.fstep-body strong { font-family:var(--sans); color:var(--ink); font-style:normal; font-weight:600; }
+.fstep-note { font-size:11.5px; color:var(--blue); font-style:italic; margin-top:2px; }
+
+/* Equation */
+.equation { font-family:var(--serif); font-size:19px; text-align:center; padding:18px; border:1px solid var(--rule); border-radius:3px; background:var(--surface); margin:12px 0; line-height:1.8; color:var(--ink); }
+.eq-focal { color:var(--navy); font-weight:600; font-family:var(--sans); }
+.eq-op { color:var(--muted); padding:0 6px; }
+
+/* Steps */
+.steps { display:flex; flex-direction:column; }
+.step { display:flex; gap:14px; padding:12px 0; border-bottom:1px solid var(--rule); align-items:flex-start; }
+.step:last-child { border-bottom:none; }
+.step-n { width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+.step-body h3 { font-size:14px; font-weight:700; color:var(--ink); margin-bottom:3px; }
+.step-body p { font-size:13px; color:var(--ink-soft); font-family:var(--serif); line-height:1.55; }
+
+/* Ask rows */
+.ask { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--rule); align-items:flex-start; }
+.ask:last-child { border-bottom:none; }
+.ask-rank { width:26px; height:26px; border-radius:3px; background:var(--blue-pale); border:1px solid var(--blue-lt); color:var(--navy); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; }
+.ask-body h3 { font-size:14px; font-weight:700; color:var(--ink); margin-bottom:3px; }
+.ask-body p { font-size:13px; color:var(--ink-soft); font-family:var(--serif); line-height:1.55; }
+
+/* DS area grid */
+.ds-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:3px; overflow:hidden; margin-top:4px; }
+.ds-cell { background:var(--surface); padding:13px 16px; }
+.ds-cell:hover { background:var(--blue-pale); }
+.ds-n { font-size:10px; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:.1em; margin-bottom:3px; }
+.ds-title { font-size:13px; font-weight:700; color:var(--ink); margin-bottom:2px; }
+.ds-desc { font-size:12px; color:var(--ink-soft); font-family:var(--serif); line-height:1.45; }
+
+/* Gantt */
+.gantt { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+.gantt-row { display:flex; align-items:center; gap:12px; }
+.gantt-lbl { width:160px; font-size:12px; color:var(--ink-soft); flex-shrink:0; font-weight:600; }
+.gantt-track { flex:1; height:22px; background:var(--bg); border-radius:2px; position:relative; overflow:hidden; border:1px solid var(--rule); }
+.gantt-bar { position:absolute; top:3px; height:16px; border-radius:2px; display:flex; align-items:center; padding-left:6px; font-size:10px; font-weight:600; color:rgba(255,255,255,.9); white-space:nowrap; }
+.gantt-months { display:flex; margin-left:172px; margin-bottom:3px; }
+.gantt-month { flex:1; font-size:9.5px; color:var(--muted); }
+.gantt-ms { position:absolute; top:2px; font-size:11px; transform:translateX(-50%); color:var(--navy); }
+
+.slide-footer { margin-top:40px; padding-top:18px; border-top:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--muted); }
+#keyhint { position:fixed; bottom:16px; right:20px; font-size:10.5px; color:var(--muted-2); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-head">
+    <div class="sb-title">Kaan Mentorship Deck</div>
+    <div class="sb-meta">Thomas Neira · 2026</div>
+  </div>
+  <div class="sb-toc">
+    <div class="sb-sec">A — Channel Overview</div>
+    <div class="sb-item active" onclick="goTo(0)"><span class="sb-n">1</span><span class="sb-l">Title + Through-line</span></div>
+    <div class="sb-item" onclick="goTo(1)"><span class="sb-n">2</span><span class="sb-l">Two Purchasing Structures</span></div>
+    <div class="sb-item" onclick="goTo(2)"><span class="sb-n">3</span><span class="sb-l">PingTree Auction</span></div>
+    <div class="sb-item" onclick="goTo(3)"><span class="sb-n">4</span><span class="sb-l">SmartBidding Funnel</span></div>
+    <div class="sb-item" onclick="goTo(4)"><span class="sb-n">5</span><span class="sb-l">CNU Bidding Model</span></div>
+    <div class="sb-item" onclick="goTo(5)"><span class="sb-n">6</span><span class="sb-l">Offer Wall Structure</span></div>
+    <div class="sb-item" onclick="goTo(6)"><span class="sb-n">7</span><span class="sb-l">Offer Wall Funnel</span></div>
+    <div class="sb-item" onclick="goTo(7)"><span class="sb-n">8</span><span class="sb-l">NetCredit Contrast</span></div>
+    <div class="sb-item" onclick="goTo(8)"><span class="sb-n">9</span><span class="sb-l">Engine Competition Data</span></div>
+    <div class="sb-item" onclick="goTo(9)"><span class="sb-n">10</span><span class="sb-l">Datasets</span></div>
+    <div class="sb-sec">B — DS Opportunities</div>
+    <div class="sb-item" onclick="goTo(10)"><span class="sb-n">11</span><span class="sb-l">10 DS Areas in the Channel</span></div>
+    <div class="sb-item" onclick="goTo(11)"><span class="sb-n">12</span><span class="sb-l">Priority Projects</span></div>
+    <div class="sb-sec">C — Hard Problems</div>
+    <div class="sb-item" onclick="goTo(12)"><span class="sb-n">13</span><span class="sb-l">The Feedback Loop</span></div>
+    <div class="sb-item" onclick="goTo(13)"><span class="sb-n">14</span><span class="sb-l">The Censored Data Problem</span></div>
+    <div class="sb-sec">D — Roadmap</div>
+    <div class="sb-item" onclick="goTo(14)"><span class="sb-n">15</span><span class="sb-l">Where I Am and the Gap</span></div>
+    <div class="sb-item" onclick="goTo(15)"><span class="sb-n">16</span><span class="sb-l">Roadmap at a Glance</span></div>
+    <div class="sb-item" onclick="goTo(16)"><span class="sb-n">17</span><span class="sb-l">Asks of Kaan</span></div>
+  </div>
+</nav>
+
+<!-- TOP BAR -->
+<header id="topbar">
+  <span class="tb-badge">NetCredit · CNU</span>
+  <div class="tb-crumb">
+    <span class="sec" id="tb-sec">A — Channel Overview</span>
+    <span class="sep">›</span>
+    <span class="ttl" id="tb-ttl">Title + Through-line</span>
+  </div>
+  <div class="tb-ctrl">
+    <button class="tb-btn" id="btn-prev" onclick="changeSlide(-1)">← Prev</button>
+    <span class="tb-ct" id="tb-ct">1 / 17</span>
+    <button class="tb-btn" id="btn-next" onclick="changeSlide(1)">Next →</button>
+  </div>
+</header>
+<div id="progress"><div id="pfill"></div></div>
+
+<main id="main">
+
+<!-- ==========================================================
+  1 · TITLE
+========================================================== -->
+<div class="slide active" id="s0">
+  <span class="tab-accent"></span>
+  <div class="kicker">Thomas Neira to Kaan Gunaydin · June 2026</div>
+  <h1 class="slide-title">CNU / NC Lead-Acquisition Channel and DS Learning Roadmap</h1>
+  <p class="standfirst">A working map of what I own, where the analytics gets genuinely hard, and how you can help me grow into it.</p>
+  <div class="state">
+    <em>"My channel, where the analytics gets hard, the projects I can fold into daily work, the ML frontiers, how I want to grow into a data scientist, <strong>and how you can help.</strong>"</em>
+  </div>
+  <div class="section-label">Four-beat arc</div>
+  <div class="arc">
+    <div class="arc-step"><div class="arc-n">A</div><div class="arc-l">Orient you to the channel</div></div>
+    <div class="arc-step"><div class="arc-n">B</div><div class="arc-l">DS opportunities available</div></div>
+    <div class="arc-step"><div class="arc-n">C</div><div class="arc-l">Where the problems get hard</div></div>
+    <div class="arc-step"><div class="arc-n">D</div><div class="arc-l">Roadmap and asks</div></div>
+  </div>
+  <div class="note accent mt-24">
+    <strong>The conversation I want.</strong> Not a status update. I want you to pressure-test the framing, name the right flagship project to build first, and hold the bar as a code and model reviewer for 9 to 12 months.
+  </div>
+  <div class="slide-footer"><span>Section A</span><span>Arrow keys to navigate</span></div>
+</div>
+
+
+<!-- ==========================================================
+  2 · TWO PURCHASING STRUCTURES
+========================================================== -->
+<div class="slide" id="s1">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 2 of 10</div>
+  <h1 class="slide-title">Two Purchasing Structures</h1>
+  <p class="standfirst">CNU and NetCredit both use two mechanisms to buy leads. The volume mix and cost structure differ significantly between the two brands.</p>
+
+  <div class="section-label">Structure comparison</div>
+  <table class="econ">
+    <thead>
+      <tr><th>Structure</th><th>Industry name</th><th>Cost structure</th><th>CNU mix</th><th>NC mix</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">SmartBidding</td>
+        <td>PingTree</td>
+        <td class="tc-neg">Cost per Lead — paid upfront regardless of funding</td>
+        <td class="tc-emph">~70% of volume</td>
+        <td class="tc-mute">Small / new</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--ink-soft);">Offer Wall</td>
+        <td>Online marketplace</td>
+        <td class="tc-pos">Cost per Funded — risk on lead provider</td>
+        <td class="tc-mute">~30% of volume</td>
+        <td class="tc-emph">Primary channel</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="g2 mt-24">
+    <div class="verdict">
+      <div class="vh">SmartBidding risk</div>
+      Cost is paid when the lead is purchased, not when it funds. Decreases in loan conversion raise cost per funded directly. <strong>The conversion risk sits entirely with CNU.</strong>
+    </div>
+    <div class="verdict">
+      <div class="vh">Offer Wall risk</div>
+      CNU pays only when a loan funds. But if revenue per click drops significantly, the lead provider can turn CNU off for that traffic. <strong>Volume risk rather than conversion risk.</strong>
+    </div>
+  </div>
+
+  <div class="takeaway mt-20"><strong>The inverse mix between brands is the most interesting feature of the channel.</strong> CNU has optimized into SmartBidding at scale. NC has the opposite exposure and the largest gap to close.</div>
+  <div class="slide-footer"><span>Section A</span></div>
+</div>
+
+
+<!-- ==========================================================
+  3 · PINGTREE AUCTION
+========================================================== -->
+<div class="slide" id="s2">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 3 of 10</div>
+  <h1 class="slide-title">The PingTree Auction</h1>
+  <p class="standfirst">The PingTree is an auction system where lenders are prioritized by willingness to pay. CNU gets first look, and every loss provides a free market data point.</p>
+
+  <div class="g-work mt-20">
+    <div>
+      <div class="section-label">How the cascade works</div>
+      <div class="fstep">
+        <div class="fstep-n">1</div>
+        <div class="fstep-body">
+          <strong>Price ordering — CNU at the top.</strong> Lenders willing to bid the most are placed first and get first look. Due to volume, CNU typically holds this position and underwrites the application before any competitor.
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-n">2</div>
+        <div class="fstep-body">
+          <strong>Lead provider evaluates the bid.</strong> It either accepts or shows the application to lenders with a lower willingness to pay that is still above the bid it received.
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-n">3</div>
+        <div class="fstep-body">
+          <strong>Cascade continues downward.</strong> The lead provider goes down in price until it finds a buyer above prior bids, or accepts one of those earlier bids.
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-n">4</div>
+        <div class="fstep-body">
+          <strong>On a loss, free price discovery.</strong> CNU participates in a second-price sealed auction. When we lose a bid, we receive the winning bid amount. Every loss is a labeled data point about market clearing prices.
+          <div class="fstep-note">This is the foundation for a clearing-price model.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail">
+      <div class="rail-h">Auction mechanics</div>
+      <div style="font-family:var(--serif);font-size:13px;color:var(--ink-soft);line-height:1.75;">
+        <strong style="font-family:var(--sans);color:var(--ink);">Second-price sealed bid.</strong> Price-ordered, sequential. First bidder to clear the reserve wins.<br><br>
+        <strong style="font-family:var(--sans);color:var(--ink);">CNU's advantage.</strong> Volume gives us first look on every lead before lower-positioned lenders see it.<br><br>
+        <strong style="font-family:var(--sans);color:var(--ink);">On losses.</strong> The winning bid is revealed. We observe market price even without winning. This is rare in auction markets.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Section A</span></div>
+</div>
+
+
+<!-- ==========================================================
+  4 · SMARTBIDDING FUNNEL (moved before CNU Bidding Model)
+========================================================== -->
+<div class="slide" id="s3">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 4 of 10</div>
+  <h1 class="slide-title">SmartBidding Funnel</h1>
+  <p class="standfirst">The SmartBidding path is relatively direct. Bank account is collected in the original application, so underwriting is mostly complete before the bid is placed.</p>
+
+  <div class="g2 mt-20">
+    <div>
+      <div class="section-label">Drop-off at each stage</div>
+      <div class="funnel-row">
+        <span class="fl">Application</span>
+        <span class="ftrack"><span class="ffill" style="width:100%;background:var(--navy);"></span></span>
+        <span class="fp">100%</span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin:-4px 0 4px 138px;">CNU underwrites and places bid</div>
+      <div class="funnel-row">
+        <span class="fl">Bid won</span>
+        <span class="ftrack"><span class="ffill" style="width:72%;background:var(--navy);"></span></span>
+        <span class="fp">varies</span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin:-4px 0 4px 138px;">Customer routed directly to offer</div>
+      <div class="funnel-row">
+        <span class="fl">Reach offer</span>
+        <span class="ftrack"><span class="ffill" style="width:58%;background:var(--blue);"></span></span>
+        <span class="fp"></span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin:-4px 0 4px 138px;">Customer reviews contract</div>
+      <div class="funnel-row">
+        <span class="fl">Sign contract</span>
+        <span class="ftrack"><span class="ffill" style="width:28%;background:var(--blue);"></span></span>
+        <span class="fp"></span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin:-4px 0 4px 138px;">Verification if needed, then disburse</div>
+      <div class="funnel-row">
+        <span class="fl" style="color:var(--blue);font-weight:700;">Funded</span>
+        <span class="ftrack"><span class="ffill" style="width:18%;background:var(--blue);"></span></span>
+        <span class="fp" style="color:var(--blue);">CPF realized</span>
+      </div>
+      <div class="takeaway mt-16"><strong>Fewer drop-off points than Offer Wall.</strong> Bank account is already in the application, so there is no second underwriting layer after the customer clicks.</div>
+    </div>
+
+    <div>
+      <div class="section-label">Step-by-step path</div>
+      <div class="fstep">
+        <div class="fstep-n">1</div>
+        <div class="fstep-body"><strong>Application arrives with bank account.</strong> Customer submits on the lead provider's website. Bank account collected here, not later.<div class="fstep-note">Key structural advantage over Offer Wall.</div></div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-n">2</div>
+        <div class="fstep-body"><strong>CNU underwrites and bids.</strong> Approval decision and bid price supplied in near real-time.</div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-n">3</div>
+        <div class="fstep-body"><strong>Lead provider accepts or rejects.</strong> Win: CNU purchases and routes customer directly to offer. Loss: winning bid amount revealed.</div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-n blue">4</div>
+        <div class="fstep-body"><strong>Customer reviews and signs.</strong> Main drop-off point. No re-underwriting needed — application is complete.</div>
+      </div>
+      <div class="fstep">
+        <div class="fstep-n blue">5</div>
+        <div class="fstep-body"><strong>Verification and funding.</strong> Additional checks if needed, then loan is disbursed. CPF realized.</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Section A</span></div>
+</div>
+
+
+<!-- ==========================================================
+  5 · CNU BIDDING MODEL (was slide 4)
+========================================================== -->
+<div class="slide" id="s4">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 5 of 10</div>
+  <h1 class="slide-title">CNU SmartBidding Model</h1>
+  <p class="standfirst">CNU underwrites the application and submits a bid based on three factors. This is a sophisticated, production-grade system — the benchmark NC needs to reach.</p>
+
+  <div class="section-label mt-20">The three-factor bid</div>
+  <div class="equation">
+    <span class="eq-focal">Bid</span>
+    <span class="eq-op">=</span>
+    <span class="eq-focal">f ( Customer LTV )</span>
+    <span class="eq-op">x</span>
+    <span class="eq-focal">g ( Conversion likelihood )</span>
+    <span class="eq-op">÷</span>
+    <span class="eq-focal">Market price</span>
+  </div>
+
+  <div class="g3 mt-20">
+    <div>
+      <div class="section-label">Customer LTV</div>
+      <div style="font-family:var(--serif);font-size:13px;color:var(--ink-soft);line-height:1.65;">Credit report data and application data that allow projection of customer profitability. The most mature component — reuses existing underwriting infrastructure.</div>
+    </div>
+    <div>
+      <div class="section-label">Conversion likelihood</div>
+      <div style="font-family:var(--serif);font-size:13px;color:var(--ink-soft);line-height:1.65;">Signals from the lead provider, requested loan amount, and other indicators of lower likelihood the customer will take out the loan. The highest-leverage input for controlling CPF.</div>
+    </div>
+    <div>
+      <div class="section-label">Market price</div>
+      <div style="font-family:var(--serif);font-size:13px;color:var(--ink-soft);line-height:1.65;">Second-price sealed auction: when we lose, we receive the winning bid. This gives real-time price discovery on losses — a labeled dataset for modeling market clearing prices.</div>
+    </div>
+  </div>
+
+  <div class="note accent mt-20">
+    <strong>The efficiency and the risk are the same thing.</strong> The SmartBidding program is highly efficient at purchasing leads. But cost is paid upfront on a cost-per-lead basis, so decreases in loan conversion translate directly into increased cost per funded with no safety valve.
+  </div>
+  <div class="slide-footer"><span>Section A</span></div>
+</div>
+
+
+<!-- ==========================================================
+  6 · OFFER WALL STRUCTURE
+========================================================== -->
+<div class="slide" id="s5">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 6 of 10</div>
+  <h1 class="slide-title">Offer Wall Structure</h1>
+  <p class="standfirst">Traditional online marketplace where all offers presented to the customer are shown simultaneously. Risk sits with the lead provider, not CNU.</p>
+
+  <div class="g-work mt-20">
+    <div>
+      <div class="section-label">How Offer Wall works</div>
+      <div style="font-family:var(--serif);font-size:14px;color:var(--ink-soft);line-height:1.7;margin-bottom:16px;">
+        All lender offers are displayed side-by-side. The customer chooses. The lead provider benefits by giving customers multiple options — the expectation is that at least one will fund. Because of this, <strong style="font-family:var(--sans);color:var(--ink);">cost is charged per funded loan, not per lead.</strong>
+      </div>
+      <div class="section-label">CNU's position on the Offer Wall</div>
+      <div style="font-family:var(--serif);font-size:14px;color:var(--ink-soft);line-height:1.7;">
+        CNU is less competitive on the Offer Wall because its offer terms are not as strong as competitors. However, <strong style="font-family:var(--sans);color:var(--ink);">CNU is often the only lender that provides an offer</strong>, and in those sessions it can be a strong addition to an Offer Wall portfolio.
+      </div>
+    </div>
+    <div>
+      <div class="rail">
+        <div class="rail-h">Volume risk on Offer Wall</div>
+        <div style="font-family:var(--serif);font-size:13px;color:var(--ink-soft);line-height:1.7;">
+          The main risk is not conversion — it is volume. If CNU's <strong style="font-family:var(--sans);color:var(--ink);">revenue per click</strong> drops significantly, the lead provider may turn CNU off for that traffic segment.<br><br>
+          This is less common than conversion risk in SmartBidding, but Offer Wall requires monitoring RPC alongside CPF.
+        </div>
+      </div>
+      <div class="note accent mt-16">
+        <strong>The strategic use case.</strong> Offer Wall captures near-prime and subprime segments that would not see a CNU offer elsewhere. The sessions where CNU is the only lender are the most diagnostic for understanding true demand.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Section A</span></div>
+</div>
+
+
+<!-- ==========================================================
+  7 · OFFER WALL FUNNEL
+========================================================== -->
+<div class="slide" id="s6">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 7 of 10</div>
+  <h1 class="slide-title">Offer Wall Funnel</h1>
+  <p class="standfirst">The Offer Wall funnel has more steps than SmartBidding. Bank account is not collected on the wall, creating an additional underwriting layer after the customer clicks through.</p>
+
+  <div class="g2 mt-20">
+    <div>
+      <div class="section-label">Drop-off at each stage</div>
+      <div class="funnel-row">
+        <span class="fl">Application</span>
+        <span class="ftrack"><span class="ffill" style="width:100%;background:var(--navy);"></span></span>
+        <span class="fp">100%</span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin:-4px 0 4px 138px;">First underwriting — offer generated</div>
+      <div class="funnel-row">
+        <span class="fl">Offer shown</span>
+        <span class="ftrack"><span class="ffill" style="width:85%;background:var(--navy);"></span></span>
+        <span class="fp"></span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin:-4px 0 4px 138px;">Customer selects CNU/NC offer on wall</div>
+      <div class="funnel-row">
+        <span class="fl">Click-through</span>
+        <span class="ftrack"><span class="ffill" style="width:55%;background:var(--blue);"></span></span>
+        <span class="fp"></span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin:-4px 0 4px 138px;">Income + bank account collected, second UW</div>
+      <div class="funnel-row">
+        <span class="fl">Re-approved</span>
+        <span class="ftrack"><span class="ffill" style="width:32%;background:var(--blue);"></span></span>
+        <span class="fp"></span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin:-4px 0 4px 138px;">Signs contract, passes verification</div>
+      <div class="funnel-row">
+        <span class="fl" style="color:var(--blue);font-weight:700;">Funded</span>
+        <span class="ftrack"><span class="ffill" style="width:15%;background:var(--blue);"></span></span>
+        <span class="fp" style="color:var(--blue);">CPF realized</span>
+      </div>
+      <div class="takeaway mt-16"><strong>The second underwriting layer is the key structural difference.</strong> Bank account not collected on the wall means more steps, more drop-off, and more conversion risk than SmartBidding.</div>
+    </div>
+
+    <div>
+      <div class="section-label">SB vs Offer Wall: structural comparison</div>
+      <table class="econ">
+        <thead><tr><th>Factor</th><th>SmartBidding</th><th>Offer Wall</th></tr></thead>
+        <tbody>
+          <tr><td>Bank account</td><td class="tc-pos">In application</td><td class="tc-neg">Collected post-click</td></tr>
+          <tr><td>UW layers</td><td class="tc-pos">One (pre-bid)</td><td class="tc-neg">Two (pre-offer + post-click)</td></tr>
+          <tr><td>Drop-off points</td><td class="tc-pos">Fewer</td><td class="tc-neg">More</td></tr>
+          <tr><td>Cost structure</td><td class="tc-neg">CNU bears it (CPL)</td><td class="tc-pos">Provider bears it (CPF)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Section A</span></div>
+</div>
+
+
+<!-- ==========================================================
+  8 · NETCREDIT CONTRAST
+========================================================== -->
+<div class="slide" id="s7">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 8 of 10</div>
+  <h1 class="slide-title">NetCredit: The Inverse Structure</h1>
+  <p class="standfirst">NC has the same two purchasing structures as CNU, but the volume is inverse. The SmartBidding program is still in infancy with a naive bidding model that creates two structural problems.</p>
+
+  <div class="g2 mt-20">
+    <div>
+      <div class="section-label">NC's current posture</div>
+      <div style="font-family:var(--serif);font-size:14px;color:var(--ink-soft);line-height:1.7;margin-bottom:14px;">
+        NC primarily operates in Offer Walls and manages CPF campaigns, in part due to high sensitivity to spend volatility. SmartBidding was recently launched but remains early-stage.
+      </div>
+      <div class="note accent">
+        <strong>High sensitivity to spend volatility</strong> means NC prioritizes the CPF cost structure of Offer Wall over the upfront-cost risk of SmartBidding. Conservative but volume-limiting.
+      </div>
+    </div>
+    <div>
+      <div class="section-label">NC SmartBidding: naive model</div>
+      <div class="rail">
+        <div class="rail-h">Current bidding strategy</div>
+        <div style="font-family:var(--serif);font-size:13px;color:var(--ink-soft);line-height:1.8;">
+          Bids driven entirely by underwriting model score (1 to 10):<br><br>
+          Score 1 <strong style="font-family:var(--sans);color:var(--navy);">$20</strong> &nbsp;·&nbsp; Score 2 <strong style="font-family:var(--sans);color:var(--navy);">$18</strong> &nbsp;·&nbsp; Score 3 <strong style="font-family:var(--sans);color:var(--navy);">$16</strong> &nbsp;·&nbsp; ...<br><br>
+          Top bid is capped at <strong style="font-family:var(--sans);color:var(--alert);">$20</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label mt-24">Two structural problems with the naive model</div>
+  <div class="g2">
+    <div class="note alert">
+      <strong>Problem 1 — The $20 ceiling.</strong> NC only sees traffic when no other lender bids at or above $20. The entire high-value segment of the PingTree is invisible to NC. It competes only for leads that no one else wants.
+    </div>
+    <div class="note alert">
+      <strong>Problem 2 — Conversion drag.</strong> NC requires more verification on each lead, creating more customer drop-off. The naive bidding model does not account for this at all, so NC systematically overpays for its funded loans relative to what a calibrated model would bid.
+    </div>
+  </div>
+  <div class="slide-footer"><span>Section A</span></div>
+</div>
+
+
+<!-- ==========================================================
+  9 · ENGINE COMPETITION DATA
+========================================================== -->
+<div class="slide" id="s8">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 9 of 10</div>
+  <h1 class="slide-title">Engine Competition Data</h1>
+  <p class="standfirst">CNU and NC receive rich competition data from Engine, one of the largest subprime and near-prime marketplaces. This is an unusually complete view of competitor behavior.</p>
+
+  <div class="section-label mt-20">What Engine provides</div>
+  <table class="econ">
+    <thead><tr><th>Data point</th><th>Customers in scope</th><th>What we can do with it</th></tr></thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">All offers presented</td>
+        <td>Customers we approved</td>
+        <td>Direct competitor pricing comparison for our approved population</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">All offers presented</td>
+        <td>Customers we rejected</td>
+        <td>Understand what competitors offered to our rejections — coverage gap analysis</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">Funded loans</td>
+        <td>Approved customers who chose a competitor</td>
+        <td>Identify customers we could have won — the convertible-loss population</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="g2 mt-24">
+    <div class="verdict">
+      <div class="vh">What makes Engine unusual</div>
+      Most lenders see only their own funnel. Engine gives a window into competitor pricing and customer choices across the full marketplace, including for customers we approved but did not win.
+    </div>
+    <div class="verdict">
+      <div class="vh">The selection problem — covered in Section C</div>
+      Engine data is conditioned on our own approve/reject decision. We never observe competitor funding for customers we rejected. Powerful for prediction on the approved population, but requires correction before using for policy decisions that change the approval boundary.
+    </div>
+  </div>
+  <div class="slide-footer"><span>Section A</span></div>
+</div>
+
+
+<!-- ==========================================================
+  10 · DATASETS
+========================================================== -->
+<div class="slide" id="s9">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section A · Slide 10 of 10</div>
+  <h1 class="slide-title">Datasets</h1>
+  <p class="standfirst">Four data sources available for analysis and modeling across the CNU and NC channels.</p>
+
+  <div class="section-label mt-20">Data inventory</div>
+  <table class="econ">
+    <thead><tr><th>Dataset</th><th>Contents</th></tr></thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">CNU application, underwriting, and funding data</td>
+        <td>Full funnel from application submission through funded loan for CashNetUSA</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">NC application, underwriting, and funding data</td>
+        <td>Full funnel from application submission through funded loan for NetCredit</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">Adobe Analytics (CNU and NC)</td>
+        <td>Website navigation and customer interaction data across both brand properties</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--blue);">Engine Marketplace competition data</td>
+        <td>All offers to approved and rejected customers; funded loans for approved customers who chose a competitor</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="takeaway mt-24"><strong>End of Section A.</strong> You now have the map: two purchasing structures, the auction mechanics, the two funnel paths, NC's current constraints, and the data available. Section B maps out where data science can go from here.</div>
+  <div class="slide-footer"><span>Section A · End of channel overview</span></div>
+</div>
+
+
+<!-- ==========================================================
+  11 · 10 DS AREAS IN THE CHANNEL
+========================================================== -->
+<div class="slide" id="s10">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section B · Slide 11</div>
+  <h1 class="slide-title">10 DS Areas in This Channel</h1>
+  <p class="standfirst">The lead-acquisition channel has rich, structured data across funnels, auctions, and competition. Here is a map of how ten core data science areas apply to this specific context.</p>
+
+  <div class="ds-grid mt-20">
+    <div class="ds-cell">
+      <div class="ds-n">01 · Predictive Analytics</div>
+      <div class="ds-title">Conversion propensity modeling</div>
+      <div class="ds-desc">Per-lead P(fund) using application, lead provider, and behavioral signals. CNU has a production model; NC does not. The highest-leverage input for CPF control.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">02 · Gradient Boosting</div>
+      <div class="ds-title">Bid optimization and lead scoring</div>
+      <div class="ds-desc">GBM models for replacing the NC score ladder with a calibrated E[LTV] x P(convert) bid. Requires mandatory calibration (Brier score, reliability curve) not just AUC.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">03 · Survival Analysis</div>
+      <div class="ds-title">Clearing-price and verification completion</div>
+      <div class="ds-desc">PingTree wins are right-censored: we won but do not know the minimum clearing price. Survival models estimate P(win | bid = x). Also applicable to predicting verification drop-off.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">04 · Time Series and Forecasting</div>
+      <div class="ds-title">CPF forecasting and anomaly detection</div>
+      <div class="ds-desc">Forecast next-week CPF per source and alert on drift using ARIMA, Prophet, or SPC. Replaces manual weekly monitoring and enables proactive source-pausing decisions.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">05 · Causal Inference</div>
+      <div class="ds-title">Attribution and off-policy evaluation</div>
+      <div class="ds-desc">Incrementality measurement for channel attribution. Doubly-robust estimators and IPW for evaluating bid policy changes without live experimentation on every variant.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">06 · Clustering and Segmentation</div>
+      <div class="ds-title">Lead provider quality tiers and customer segments</div>
+      <div class="ds-desc">Unsupervised segmentation of lead providers by quality, intent signal, and CPF profile. Separate bid models or multipliers per segment rather than a single population-level model.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">07 · Graph Theory and Network Analysis</div>
+      <div class="ds-title">Affiliate ecosystem and traffic routing</div>
+      <div class="ds-desc">Model the lead provider network as a graph where edges carry volume, quality, and CPF. Identify which affiliates act as hubs, which are redundant, and where traffic routing creates hidden correlation.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">08 · Anomaly Detection</div>
+      <div class="ds-title">Attribution bugs and data quality monitoring</div>
+      <div class="ds-desc">Turn the manual misattribution hunt into an automated classifier. Flag session/source patterns that historically signal misattribution without requiring manual review each cycle.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">09 · Elasticity and Regression</div>
+      <div class="ds-title">Offer elasticity and price sensitivity</div>
+      <div class="ds-desc">Estimate how conversion rate changes with offer terms and bid price using Engine competition data. Understand where competitors are price-sensitive versus terms-sensitive.</div>
+    </div>
+    <div class="ds-cell">
+      <div class="ds-n">10 · Reinforcement Learning</div>
+      <div class="ds-title">Dynamic bidding with explore / exploit</div>
+      <div class="ds-desc">Long-run: treat bidding as a bandit or RL problem where each bid is an action with a delayed reward signal (funding). Requires a validated offline policy evaluator before going live.</div>
+    </div>
+  </div>
+
+  <div class="slide-footer"><span>Section B — DS Opportunities</span></div>
+</div>
+
+
+<!-- ==========================================================
+  12 · PRIORITY PROJECTS
+========================================================== -->
+<div class="slide" id="s11">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section B · Slide 12</div>
+  <h1 class="slide-title">Priority Projects</h1>
+  <p class="standfirst">CNU already operates a production SmartBidding model with conversion propensity, EV bidding, and market price components. The priority opportunities are concentrated in NC and in cross-channel infrastructure both brands can use.</p>
+
+  <div class="section-label mt-20">Near-term (do this year)</div>
+  <table class="econ">
+    <thead><tr><th>Project</th><th>DS area</th><th>Brand</th><th>Why now</th></tr></thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">NC conversion propensity model</td>
+        <td>Predictive / GBM</td>
+        <td class="tc-emph">NC</td>
+        <td>NC has no calibrated P(fund) model. The $20 ladder ignores conversion entirely.</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">NC bid optimization backtest</td>
+        <td>Gradient Boosting + Causal</td>
+        <td class="tc-emph">NC</td>
+        <td>Replace the score ladder with E[LTV] x P(convert). Offline policy evaluation before touching live spend.</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">Engine competition and offer elasticity analysis</td>
+        <td>Elasticity / Regression + Causal</td>
+        <td class="tc-pos">Both</td>
+        <td>Engine already exists and has rich labeled data. Convertible-loss population, competitor pricing, and offer term sensitivity are all derivable from what we already receive.</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">CPF forecasting and anomaly alerting</td>
+        <td>Time Series</td>
+        <td class="tc-pos">Both</td>
+        <td>Replaces manual monitoring. Self-contained, low risk to production.</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--navy);">Attribution bug detector</td>
+        <td>Anomaly Detection</td>
+        <td class="tc-pos">Both</td>
+        <td>Turns an existing manual process into an automated classifier.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note accent mt-16">
+    <strong>Engine is the highest-leverage near-term dataset.</strong> Three specific workstreams are immediately available: (1) convertible-loss scoring — rank approved customers by P(competitor would fund) using the funded-with-competitor labels Engine already provides; (2) competitor offer benchmarking — compare our offer terms against competitor offers shown in the same session to identify where we are uncompetitive on price vs. terms; (3) offer elasticity — estimate how conversion rate responds to changes in our offer amount or rate across customer segments. No new data pipeline required.
+  </div>
+
+  <div class="section-label mt-24">Stretch (6 to 12 months)</div>
+  <table class="econ">
+    <thead><tr><th>Project</th><th>DS area</th><th>Depends on</th></tr></thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:700;color:var(--ink-soft);">Lead provider segmentation and tier bidding</td>
+        <td>Clustering</td>
+        <td>CPF forecasting baseline</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--ink-soft);">Clearing-price model for NC PingTree</td>
+        <td>Survival Analysis</td>
+        <td>NC SmartBidding volume to generate loss labels</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:var(--ink-soft);">Selection-corrected Engine policy model</td>
+        <td>Causal Inference</td>
+        <td>Engine elasticity baseline + Heckman/IPW correction for rejected-customer censoring</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="verdict mt-20">
+    <div class="vh">Question for Kaan</div>
+    Is the NC bid optimization backtest the right first flagship, or should a lower-risk standalone model come first? What is the bar for "defensible offline evaluation" before touching live spend?
+  </div>
+  <div class="slide-footer"><span>Section B — DS Opportunities · End of projects section</span></div>
+</div>
+
+
+<!-- ==========================================================
+  13 · THE FEEDBACK LOOP
+========================================================== -->
+<div class="slide" id="s12">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section C · Slide 13</div>
+  <h1 class="slide-title">The Hard Problem: We Act on What We Observe</h1>
+  <p class="standfirst">Every model in this channel shares the same underlying difficulty. Our actions select what we observe, and we want decisions that change those actions — which changes what we observe next.</p>
+
+  <div class="verdict mt-20" style="font-size:14.5px;">
+    <div class="vh">The feedback loop</div>
+    We <strong>place a bid</strong> (act) which determines <strong>which leads we win</strong> (what we observe) and we want to find a <strong>better bid</strong> (a new action) which changes the distribution of leads we win (what we observe next).
+  </div>
+
+  <div class="g2 mt-24">
+    <div>
+      <div class="section-label">Where it shows up</div>
+      <table class="econ">
+        <thead><tr><th>Model</th><th>Selection problem</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;">Conversion model</td><td>Trained on won leads only — P(fund) biased upward on the observed sample</td></tr>
+          <tr><td style="font-weight:700;">Clearing-price model</td><td>Wins are right-censored — we know we won but not the minimum price to win</td></tr>
+          <tr><td style="font-weight:700;">Engine analysis</td><td>Conditioned on our own approve/reject — rejected-customer outcomes are invisible</td></tr>
+          <tr><td style="font-weight:700;">Any policy backtest</td><td>Historical data was generated by a different policy, not the one being evaluated</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="section-label">Build order — de-risked</div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div class="step-body"><h3>NC conversion model</h3><p>Cleanest starting point. Binary label, existing training data, no live policy risk.</p></div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-body"><h3>NC clearing-price model</h3><p>Free labels on PingTree losses. Survival approach on right-censored wins.</p></div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-body"><h3>NC bid optimization backtest</h3><p>Offline policy evaluation combining 1 and 2. IPW or doubly-robust estimator before any live test.</p></div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-body"><h3>Live exploration budget</h3><p>Small randomized-bid component to generate unbiased training data. Requires stakeholder approval.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Section C — Hard Problems</span></div>
+</div>
+
+
+<!-- ==========================================================
+  14 · THE CENSORED DATA PROBLEM
+========================================================== -->
+<div class="slide" id="s13">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section C · Slide 14</div>
+  <h1 class="slide-title">The Censored Data Problem</h1>
+  <p class="standfirst">Engine data is powerful for prediction on what we observe. It is dangerous for policy decisions that change what we observe. Two sub-problems with different solutions.</p>
+
+  <div class="g2 mt-20">
+    <div>
+      <div class="section-label">Part 1 — Convertible loss prediction</div>
+      <div style="font-family:var(--serif);font-size:13.5px;color:var(--ink-soft);line-height:1.65;margin-bottom:12px;">Engine shows us approved customers who then funded with a competitor. The existing RCA described this population. The goal is to make it predictive: score each potential loss by P(competitor would fund this customer).</div>
+      <div class="note accent"><strong>Tractable with standard ML.</strong> The label exists. The selection is manageable within the approved population.</div>
+    </div>
+    <div>
+      <div class="section-label">Part 2 — Selection correction for policy</div>
+      <div style="font-family:var(--serif);font-size:13.5px;color:var(--ink-soft);line-height:1.65;margin-bottom:12px;">We never observe competitor funding for customers we rejected. Any Engine-trained model is conditioned on our approve/reject decision. Using it to set the approval boundary requires correcting for this selection.</div>
+      <div class="note alert"><strong>Requires formal correction.</strong> Heckman two-stage selection model, inverse probability weighting, or control-function approach. Start with Heckman for interpretability.</div>
+    </div>
+  </div>
+
+  <div class="takeaway mt-24"><strong>The line that matters.</strong> Prediction on the observed distribution is standard ML. Valid inference for a decision that changes the distribution requires selection correction — because the decision changes who we approve, which changes who we observe.</div>
+
+  <div class="verdict mt-20">
+    <div class="vh">Question for Kaan</div>
+    On identification strategy for the Engine win/loss data: IPW vs Heckman vs control-function. Where would you start, and what is the bar for a defensible first pass?
+  </div>
+  <div class="slide-footer"><span>Section C — Hard Problems · End</span></div>
+</div>
+
+
+<!-- ==========================================================
+  15 · WHERE I AM AND THE GAP
+========================================================== -->
+<div class="slide" id="s14">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section D · Slide 15</div>
+  <h1 class="slide-title">Where I Am and the Gap</h1>
+  <p class="standfirst">Senior analyst / junior DS hybrid. The gap is reps and code review, not underlying ability.</p>
+
+  <div class="g2 mt-20">
+    <div>
+      <div class="section-label">Already strong — do not re-teach</div>
+      <table class="econ">
+        <thead><tr><th>Domain</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--navy);">SQL / data engineering</td><td>SnowPro certified, 5-layer Engine pipeline built</td></tr>
+          <tr><td style="font-weight:700;color:var(--navy);">Statistics</td><td>Wilson, FDR, Kitagawa, Chow, clustered SEs, econ TA background</td></tr>
+          <tr><td style="font-weight:700;color:var(--navy);">Causal framing</td><td>Thinks in selection and identification, not correlation</td></tr>
+          <tr><td style="font-weight:700;color:var(--navy);">Domain expertise</td><td>Deep in lead-acquisition mechanics, auction structure, CPF</td></tr>
+          <tr><td style="font-weight:700;color:var(--navy);">Exec communication</td><td>Memos, presentations, translates technical to business</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="section-label">Real gaps to data scientist</div>
+      <table class="econ">
+        <thead><tr><th>Gap</th><th>Severity</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--ink);">Python / software fluency</td><td class="tc-neg">High — intro course level (pandas, numpy, scikit-learn); not production-grade</td></tr>
+          <tr><td style="font-weight:700;color:var(--ink);">End-to-end ML reps</td><td class="tc-neg">High — analysis yes, shipped models no</td></tr>
+          <tr><td style="font-weight:700;color:var(--ink);">Experimentation discipline</td><td class="tc-pos">Medium — stats present, MDE and pre-reg missing</td></tr>
+          <tr><td style="font-weight:700;color:var(--ink);">Productionization / MLOps</td><td class="tc-neg">High — zero deploy experience</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="verdict mt-24">
+    <div class="vh">The diagnosis</div>
+    The knowledge is there. The reps are not. What I need from you is not a curriculum — it is a <strong>code and model reviewer who holds the bar</strong> while I build the artifacts that prove the reps happened. Five artifacts over 12 months, all from work I am already doing.
+  </div>
+  <div class="slide-footer"><span>Section D — Roadmap</span></div>
+</div>
+
+
+<!-- ==========================================================
+  16 · ROADMAP AT A GLANCE
+========================================================== -->
+<div class="slide" id="s15">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section D · Slide 16</div>
+  <h1 class="slide-title">Roadmap at a Glance</h1>
+  <p class="standfirst">Five tracks over 9 to 12 months. Each ships one reviewable artifact that doubles as resume and interview evidence.</p>
+
+  <div class="section-label mt-20">12-month track view</div>
+  <div class="gantt-months"><div class="gantt-month">M1</div><div class="gantt-month">M2</div><div class="gantt-month">M3</div><div class="gantt-month">M4</div><div class="gantt-month">M5</div><div class="gantt-month">M6</div><div class="gantt-month">M7</div><div class="gantt-month">M8</div><div class="gantt-month">M9</div><div class="gantt-month">M10</div><div class="gantt-month">M11</div><div class="gantt-month">M12</div></div>
+  <div class="gantt">
+    <div class="gantt-row"><div class="gantt-lbl">Python / software</div><div class="gantt-track"><div class="gantt-bar" style="left:0%;width:25%;background:var(--navy);">Python fluency</div><div class="gantt-ms" style="left:25%;" title="M3: First reviewed PR">★</div></div></div>
+    <div class="gantt-row"><div class="gantt-lbl">ML supervised (NC)</div><div class="gantt-track"><div class="gantt-bar" style="left:8%;width:50%;background:var(--blue);">NC conversion model, backtest, survival</div><div class="gantt-ms" style="left:58%;" title="M7: NC backtest complete">★</div></div></div>
+    <div class="gantt-row"><div class="gantt-lbl">Forecasting / monitoring</div><div class="gantt-track"><div class="gantt-bar" style="left:0%;width:30%;background:var(--blue-lt);color:var(--navy);">CPF forecast + anomaly alerting</div><div class="gantt-ms" style="left:30%;" title="M4: Alerting live">★</div></div></div>
+    <div class="gantt-row"><div class="gantt-lbl">Causal / off-policy</div><div class="gantt-track"><div class="gantt-bar" style="left:42%;width:42%;background:var(--navy);">NC challenger shadow-mode deploy</div><div class="gantt-ms" style="left:83%;" title="M10: Shadow deploy">★</div></div></div>
+    <div class="gantt-row"><div class="gantt-lbl">Comms in DS register</div><div class="gantt-track"><div class="gantt-bar" style="left:0%;width:100%;background:var(--muted-2);color:var(--navy);">Continuous — every artifact has a write-up</div></div></div>
+  </div>
+
+  <div class="g2 mt-24">
+    <div>
+      <div class="section-label">5 milestone artifacts</div>
+      <table class="econ">
+        <thead><tr><th>Milestone</th><th>Artifact</th></tr></thead>
+        <tbody>
+          <tr><td class="tc-emph">M3</td><td>First reviewed Python ML PR</td></tr>
+          <tr><td class="tc-emph">M4</td><td>CPF forecasting and anomaly alerting live</td></tr>
+          <tr><td class="tc-emph">M7</td><td>NC conversion model + offline bid backtest</td></tr>
+          <tr><td class="tc-emph">M9</td><td>Experiment design used in a real live test</td></tr>
+          <tr><td class="tc-emph">M10</td><td>NC challenger in shadow-mode production</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="rail">
+      <div class="rail-h">Proposed cadence</div>
+      <div style="font-family:var(--serif);font-size:13px;color:var(--ink-soft);line-height:2.0;">
+        Biweekly 45-min 1:1<br>
+        Async review on 5 milestones<br>
+        Monthly bar-check<br>
+        Quarterly demo of in-progress artifact
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Section D — Roadmap</span></div>
+</div>
+
+
+<!-- ==========================================================
+  17 · ASKS OF KAAN
+========================================================== -->
+<div class="slide" id="s16">
+  <span class="tab-accent"></span>
+  <div class="kicker">Section D · Slide 17</div>
+  <h1 class="slide-title">Asks of Kaan</h1>
+  <p class="standfirst">Ranked by leverage. Not a status update — I want you to hold the bar.</p>
+
+  <div class="mt-20">
+    <div class="ask">
+      <div class="ask-rank">1</div>
+      <div class="ask-body">
+        <h3>Code and model review on the 5 milestone artifacts</h3>
+        <p>Hold the bar on calibration (not just AUC), honest off-policy evaluation, selection bias handling, and code quality. The review is the rep.</p>
+      </div>
+    </div>
+    <div class="ask">
+      <div class="ask-rank">2</div>
+      <div class="ask-body">
+        <h3>Pair once or twice on the NC backtest</h3>
+        <p>Specifically on backtest design and off-policy evaluation. I want to watch how you think through identification strategy, not just read about it.</p>
+      </div>
+    </div>
+    <div class="ask">
+      <div class="ask-rank">3</div>
+      <div class="ask-body">
+        <h3>Checkpoints at 3-month intervals</h3>
+        <p>Not encouragement — honest assessment. Am I rationalizing gaps or closing them?</p>
+      </div>
+    </div>
+    <div class="ask">
+      <div class="ask-rank">4</div>
+      <div class="ask-body">
+        <h3>Curate 3 to 5 resources for someone who already knows econometrics</h3>
+        <p>No intro ML needed — resources that assume causal framing and push toward ML implementation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label mt-24">Open questions for this conversation</div>
+  <table class="econ">
+    <thead><tr><th>#</th><th>Question</th></tr></thead>
+    <tbody>
+      <tr><td class="tc-emph">1</td><td>NC bid backtest first, or a lower-risk standalone model before touching live spend?</td></tr>
+      <tr><td class="tc-emph">2</td><td>On Engine win/loss identification: IPW vs Heckman vs control-function. Where to start?</td></tr>
+      <tr><td class="tc-emph">3</td><td>Is a randomized-bid exploration budget realistically approvable at Enova?</td></tr>
+      <tr><td class="tc-emph">4</td><td>Enova experimentation tooling: lean on it or build experiment design from scratch?</td></tr>
+      <tr><td class="tc-emph">5</td><td>Realistic deploy and monitor access, or MLOps shadow-mode only?</td></tr>
+    </tbody>
+  </table>
+
+  <div class="state mt-24">
+    <em>"My channel, where the analytics gets hard, projects I can fold into daily work, the ML frontiers, how I want to grow into a data scientist, <strong>and how you can help.</strong>"</em>
+  </div>
+  <div class="slide-footer">
+    <span>End of deck · Thomas Neira · June 2026</span>
+    <span><span class="chip chip-pos">Hand Kaan the pen</span></span>
+  </div>
+</div>
+
+</main>
+<div id="keyhint">Arrow keys to navigate</div>
+
+<script>
+const SLIDES = [
+  { sec:'A — Channel Overview', ttl:'Title + Through-line' },
+  { sec:'A — Channel Overview', ttl:'Two Purchasing Structures' },
+  { sec:'A — Channel Overview', ttl:'The PingTree Auction' },
+  { sec:'A — Channel Overview', ttl:'SmartBidding Funnel' },
+  { sec:'A — Channel Overview', ttl:'CNU SmartBidding Model' },
+  { sec:'A — Channel Overview', ttl:'Offer Wall Structure' },
+  { sec:'A — Channel Overview', ttl:'Offer Wall Funnel' },
+  { sec:'A — Channel Overview', ttl:'NetCredit: The Inverse Structure' },
+  { sec:'A — Channel Overview', ttl:'Engine Competition Data' },
+  { sec:'A — Channel Overview', ttl:'Datasets' },
+  { sec:'B — DS Opportunities',  ttl:'10 DS Areas in This Channel' },
+  { sec:'B — DS Opportunities',  ttl:'Priority Projects' },
+  { sec:'C — Hard Problems',     ttl:'The Feedback Loop' },
+  { sec:'C — Hard Problems',     ttl:'The Censored Data Problem' },
+  { sec:'D — Roadmap',           ttl:'Where I Am and the Gap' },
+  { sec:'D — Roadmap',           ttl:'Roadmap at a Glance' },
+  { sec:'D — Roadmap',           ttl:'Asks of Kaan' },
+];
+let cur = 0;
+const total = SLIDES.length;
+const items = document.querySelectorAll('.sb-item');
+
+function ui() {
+  document.querySelectorAll('.slide').forEach((s,i) => s.classList.toggle('active', i===cur));
+  items.forEach((item,i) => item.classList.toggle('active', i===cur));
+  if (items[cur]) items[cur].scrollIntoView({block:'nearest',behavior:'smooth'});
+  const m = SLIDES[cur];
+  document.getElementById('tb-sec').textContent = m.sec;
+  document.getElementById('tb-ttl').textContent = m.ttl;
+  document.getElementById('tb-ct').textContent = `${cur+1} / ${total}`;
+  document.getElementById('btn-prev').disabled = cur===0;
+  document.getElementById('btn-next').disabled = cur===total-1;
+  document.getElementById('pfill').style.width = `${((cur+1)/total)*100}%`;
+  window.scrollTo(0,0);
+}
+function changeSlide(d) { const n=cur+d; if(n>=0&&n<total){cur=n;ui();} }
+function goTo(i) { cur=i; ui(); }
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') changeSlide(1);
+  if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   changeSlide(-1);
+});
+ui();
+</script>
+</body>
+</html>
